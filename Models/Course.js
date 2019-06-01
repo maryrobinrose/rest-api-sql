@@ -1,7 +1,9 @@
 'use strict';
 
+// -->>require user
+
 module.exports = function(sequelize, DataTypes) {
-  var Book = sequelize.define('Book', {
+  const Course = sequelize.define('Course', {
     title: {
       type: DataTypes.STRING,
       validate: {
@@ -10,11 +12,11 @@ module.exports = function(sequelize, DataTypes) {
         }
       }
     },
-    author: {
+    description: {
       type: DataTypes.STRING,
       validate: {
         notEmpty: {
-          msg: "Author is required"
+          msg: "Description is required"
         }
       }
     },
@@ -26,5 +28,5 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
   });
-  return Book;
+  return Course;
 };

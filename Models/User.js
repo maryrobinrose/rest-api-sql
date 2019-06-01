@@ -1,30 +1,49 @@
 'use strict';
 
 module.exports = function(sequelize, DataTypes) {
-  var Book = sequelize.define('Book', {
-    title: {
+  const User = sequelize.define('User', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    firstName: {
       type: DataTypes.STRING,
       validate: {
         notEmpty: {
-          msg: "Title is required"
+          msg: "First name is required"
         }
       }
     },
-    author: {
+    lastName: {
       type: DataTypes.STRING,
       validate: {
         notEmpty: {
-          msg: "Author is required"
+          msg: "Last name is required"
         }
       }
     },
-    genre: DataTypes.STRING,
-    year: DataTypes.INTEGER
+    emailAddress: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          msg: "Email is required"
+        }
+      }
+    },
+    password: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          msg: "Password is required"
+        }
+      }
+    },
   }, {
     classMethods: {
       associate: function(models) {
       }
     },
   });
-  return Book;
+  return User;
 };
