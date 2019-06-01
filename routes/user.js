@@ -1,16 +1,24 @@
-var express = require('express');
-var router = express.Router();
-var Book = require("../models").Book;
-const Sequelize = require('sequelize');
-const Op = Sequelize.Op;
+'use strict';
 
-/* GET books listing. */
-router.get('/', function(req, res, next) {
-  Book.findAll({order: [["Year", "DESC"]]}).then(function(books){
-    res.render("books/index", {books: books, title: "List of Books" });
-  }).catch(function(error){
-      res.send(500, error);
-   });
+const express = require('express');
+const morgan = require('morgan');
+const router = express.Router();
+const User = require("../models").User;
+const Sequelize = require('sequelize');
+const authenticateUser = require('./auth');
+
+
+
+/* GET current User. */
+router.get('/', authenticateUser, (req, res) => {
+  const user = req.curentUser;
+  res.status(200);
+  res.json({
+      id: req.currentUser.id,
+      firstName: req.currentUser.firstName,
+      lastName: req.currentUser.lastName,
+      emailAddres: req.currentUser.emailAddres
+  });
 });
 
 /* Create a new book form. */
