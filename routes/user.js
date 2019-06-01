@@ -1,5 +1,3 @@
-'use strict';
-
 const express = require('express');
 const morgan = require('morgan');
 const router = express.Router();
@@ -21,77 +19,24 @@ router.get('/', authenticateUser, (req, res) => {
   });
 });
 
-/* Create a new book form. */
-router.get('/new-book', function(req, res, next) {
-  res.render("books/new-book", {book: {}, title: "New Book"});
+/* POST create user. */
+router.post('/', (req, res, next) => {
+  const newUser = req.body;
+
+
+  // If email address is null
+    //show error err.status = 400;
+
+  // if email already exists
+    // show error - already exists
+  // if email is new/valid
+    // res.status(201)
+    //Create new user
+      //user.create
+    //Catch error and check sequelize validation
+      // error message
+
 });
 
-/* POST create book. */
-router.post('/', function(req, res, next) {
-  Book.create(req.body).then(function(book) {
-    res.redirect("/books/" + book.id);
-  }).catch(function(error){
-      if(error.name === "SequelizeValidationError") {
-        res.render("books/new-book", {book: Book.build(req.body), errors: error.errors, title: "New Book"})
-      } else {
-        throw error;
-      }
-  }).catch(function(error){
-      res.send(500, error);
-   });
-});
-
-/* GET individual book. */
-router.get("/:id", function(req, res, next){
-  Book.findByPk(req.params.id).then(function(book){
-    if(book) {
-      res.render("books/update-book", {book: book, title: book.title});
-    } else {
-      const err = new Error('Book Not Found');
-        res.render("error", { error: err });
-    }
-  }).catch(function(error){
-      res.send(500, error);
-   });
-});
-
-/* PUT update book. */
-router.put("/:id", function(req, res, next){
-  Book.findByPk(req.params.id).then(function(book){
-    if(book) {
-      return book.update(req.body);
-    } else {
-      res.send(404);
-    }
-    //Updated book
-  }).then(function(book){
-    res.redirect("/books/" + book.id);
-  }).catch(function(error){
-      if(error.name === "SequelizeValidationError") {
-        var book = Book.build(req.body);
-        book.id = req.params.id;
-        res.render("books/update-book", {book: book, errors: error.errors, title: "Update Book"})
-      } else {
-        throw error;
-      }
-  }).catch(function(error){
-      res.send(500, error);
-   });
-});
-
-/* Delete individual book. */
-router.delete("/:id", function(req, res, next){
-  Book.findByPk(req.params.id).then(function(book){
-    if(book) {
-      return book.destroy();
-    } else {
-      res.send(404);
-    }
-  }).then(function(){
-      res.redirect("/books");
-  }).catch(function(error){
-      res.send(500, error);
-   });
-});
 
 module.exports = router;
