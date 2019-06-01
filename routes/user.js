@@ -17,40 +17,46 @@ router.get('/', authenticateUser, (req, res) => {
       firstName: req.currentUser.firstName,
       lastName: req.currentUser.lastName,
       emailAddress: req.currentUser.emailAddress,
-      password: req.currentUser.password
   });
 });
 
 /* POST create user. */
 router.post('/', (req, res, next) => {
-  const newUser = req.body;
 
   //If user already exists
-  User.findOne({ where: emailAddress: newUser.emailAddress})
+  User.findOne({ where: emailAddress: req.body.emailAddress})
     .then(email => {
+      // If user already exists
       if (email) {
         const err = new Error('This user already exists.')
         err.status = 400;
         next(err);
+
       } else {
 
+        const newUser = {
+          firstName: req.currentUser.firstName,
+          lastName: req.currentUser.lastName,
+          emailAddress: req.currentUser.emailAddress,
+          password: req.currentUser.password
+        };
+        // Hash password
+        newUser.password = bcryptjs.hashSync(newUser.password);
+
       }
-
-
-    });
-
-
-  //If email is empty
-  if (!newUser.emailAddress) {
-    const err = new Error('Please enter a valid email.');
-    err.status = 400;
-    next(err);
-
-
-  // Set the status to 201 Created and end the response.
-    res.status(201).end();
-
-
+        // Create new user
+        User.create(newUser)
+          .then (() => {
+            res.location('/');
+            res.status(201).end();
+          })
+          // Catch errors
+          .catch(err => {
+            err.status = 400;
+            next(err);
+          });
+      })
+  });
 
 
 module.exports = router;
