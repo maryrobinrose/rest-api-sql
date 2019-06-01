@@ -39,11 +39,13 @@ module.exports = function(sequelize, DataTypes) {
         }
       }
     },
-  }, {
-    classMethods: {
-      associate: function(models) {
-      }
-    },
   });
+
+  User.associate = (models) => {
+
+    User.hasMany(models.Course, {
+      foreignKey: 'userId',
+    });
+  };
   return User;
 };

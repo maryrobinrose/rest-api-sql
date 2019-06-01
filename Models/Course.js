@@ -1,11 +1,20 @@
 'use strict';
 
-// -->>require user
-
 module.exports = function(sequelize, DataTypes) {
   const Course = sequelize.define('Course', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
     title: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
         notEmpty: {
           msg: "Title is required"
@@ -13,20 +22,30 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     description: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
+      allowNull: false,
       validate: {
         notEmpty: {
           msg: "Description is required"
         }
       }
     },
-    genre: DataTypes.STRING,
-    year: DataTypes.INTEGER
-  }, {
-    classMethods: {
-      associate: function(models) {
-      }
+    esimatedTime: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    materialsNeeded: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
   });
-  return Course;
+
+  Course.associate = (models) => {
+
+    Course.belongsTo(models.User, {
+      foreignKey: 'userId',
+    });
+  };
+
+  return User;
 };
