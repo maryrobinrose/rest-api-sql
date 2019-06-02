@@ -105,7 +105,20 @@ router.post('/', authenticate, (req, res, next) => {
 }));
 
 /* PUT update course. */
-router.put("/:id", authenticate (req, res, next) => {
+router.put(''/:id', authenticate (req, res, next) => {
+  Course.findOne({ where: {title: req.params.id} })
+    .then(course => {
+      //If the course doesn't exist
+      if(!course) {
+        //show error
+        res.status(404).json({message: 'Course Not Found'});
+      } else {
+        //
+      }
+
+
+  //Notes from docs
+  /*
   asyncHandler(async(req,res) => {
     const quote = await records.getQuote(req.params.id);
     if(quote){
@@ -118,6 +131,32 @@ router.put("/:id", authenticate (req, res, next) => {
         res.status(404).json({message: "Quote Not Found"});
     }
 }));
+
+User.create({ username: 'fnord', job: 'omnomnom' })
+  .then(() => User.findOrCreate({where: {username: 'fnord'}, defaults: {job: 'something else'}}))
+  .then(([user, created]) => {
+    console.log(user.get({
+      plain: true
+    }))
+    console.log(created)
+
+    /*
+    In this example, findOrCreate returns an array like this:
+    [ {
+        username: 'fnord',
+        job: 'omnomnom',
+        id: 2,
+        createdAt: Fri Mar 22 2013 21: 28: 34 GMT + 0100(CET),
+        updatedAt: Fri Mar 22 2013 21: 28: 34 GMT + 0100(CET)
+      },
+      false
+    ]
+    The array returned by findOrCreate gets spread into its 2 parts by the array spread on line 3, and
+    the parts will be passed as 2 arguments to the callback function beginning on line 69, which will
+    then treat them as "user" and "created" in this case. (So "user" will be the object from index 0
+    of the returned array and "created" will equal "false".)
+
+  })*/
 
 // From project 8
 /* PUT update book. */
