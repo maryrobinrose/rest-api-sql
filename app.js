@@ -14,13 +14,11 @@ const db = new Sequelize({
 console.log('Testing the connection to the database...');
 
 // Test the connection to the database
-sequelize
   db.authenticate()
     .then(() => {
-      console.log('Connectung to database...');
-
-      return sequelize.sync();
+      console.log('Connected to database.');
     })
+    .catch(err => console.error('The connection failed.'));
 
 // variable to enable global error logging
 const enableGlobalErrorLogging = process.env.ENABLE_GLOBAL_ERROR_LOGGING === 'true';
