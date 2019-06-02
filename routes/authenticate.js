@@ -1,3 +1,6 @@
+'use strict';
+
+const express = require('express');
 const User = require("../models").User;
 const authenticate = require('basic-auth');
 const bcryptjs = require('bcryptjs');
@@ -9,11 +12,11 @@ const bcryptjs = require('bcryptjs');
  * @param {Function} next - The function to call to pass execution to the next middleware.
  */
 
- const authenticateUser = (req, res, next) => {
+ const authenticate = (req, res, next) => {
    let message = null;
 
    // Get the user's credentials from the Authorization header.
-   const credentials = getCredentials(req);
+   const credentials = authenticate(req);
 
 
 //from https://www.npmjs.com/package/basic-auth
