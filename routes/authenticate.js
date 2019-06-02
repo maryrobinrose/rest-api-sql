@@ -2,6 +2,19 @@ const User = require("../models").User;
 const authenticate = require('basic-auth');
 const bcryptjs = require('bcryptjs');
 
+/**
+ * Middleware to authenticate the request using Basic Authentication.
+ * @param {Request} req - The Express Request object.
+ * @param {Response} res - The Express Response object.
+ * @param {Function} next - The function to call to pass execution to the next middleware.
+ */
+
+ const authenticateUser = (req, res, next) => {
+   let message = null;
+
+   // Get the user's credentials from the Authorization header.
+   const credentials = getCredentials(req);
+
 
 //from https://www.npmjs.com/package/basic-auth
 // Check credentials
