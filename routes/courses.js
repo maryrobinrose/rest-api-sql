@@ -67,15 +67,38 @@ router.get('/:id', (req, res, next) => {
     });
 });
 
+//POST /api/courses 201 - Creates a course, sets the Location header to the URI for the course, and returns no content
+
 /* POST create new course. */
 router.post('/', authenticate, (req, res, next) => {
-    if(req.body.author && req.body.quote){
-        const quote = await records.createQuote({
-            quote: req.body.quote,
-            author: req.body.author
-        });
+  Course.create(req.body).then(book => {
+
+  })
+    if(req.body.course){
+        const newCourse = {
+          id: req.body.id,
+          title: req.body.title,
+          description: req.body.description,
+          estimatedTime: req.body.estimatedTime,
+          materialsNeeded: req.body.materialsNeeded
+        }
         res.status(201).json(course);
     } else {
         res.status(400).json({message: 'Course description is required.'});
     }
 }));
+
+//From project 8
+/*router.post('/', function(req, res, next) {
+  Book.create(req.body).then(function(book) {
+    res.redirect("/books/" + book.id);
+  }).catch(function(error){
+      if(error.name === "SequelizeValidationError") {
+        res.render("books/new-book", {book: Book.build(req.body), errors: error.errors, title: "New Book"})
+      } else {
+        throw error;
+      }
+  }).catch(function(error){
+      res.send(500, error);
+   });
+});*/
