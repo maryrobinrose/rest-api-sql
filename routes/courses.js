@@ -76,43 +76,33 @@ router.get('/:id', (req, res, next) => {
 
 /* POST create new course. */
 router.post('/', authenticate, (req, res, next) => {
-  Project.findOne({ where: {title: 'aProject'} }).then(project => {
-  // project will be the first entry of the Projects table with the title 'aProject' || null
-})
-
-
-
-  Course.create(req.body)
+  //First check to see if course already exists
+  Course.findOne({ where: {title: req.body.title} })
     .then(course => {
-      if(req.body.course) {
-          const newCourse = {
-            id: req.body.id,
-            title: req.body.title,
-            description: req.body.description,
-            estimatedTime: req.body.estimatedTime,
-            materialsNeeded: req.body.materialsNeeded
-          };
-  })
-        res.status(201).json(course);
-    } else {
-        res.status(400).json({message: 'Course description is required.'});
-    }
-}));
-
-//From project 8
-/*router.post('/', function(req, res, next) {
-  Book.create(req.body).then(function(book) {
-    res.redirect("/books/" + book.id);
-  }).catch(function(error){
-      if(error.name === "SequelizeValidationError") {
-        res.render("books/new-book", {book: Book.build(req.body), errors: error.errors, title: "New Book"})
+      if(course) {
+        const err = new Error('This course already exists.')
+        err.status = 400;
+        next(err);
       } else {
-        throw error;
+        //If the course is new, create new course
+        //Variable holds new course info
+        const newCourse = {
+          id: req.body.id,
+          title: req.body.title,
+          description: req.body.description,
+          estimatedTime: req.body.estimatedTime,
+          materialsNeeded: req.body.materialsNeeded
+        };
+        Course.create(newCourse)
+          .then (newCourse => {
+            res.status(201).json(course);
+          })
+          .catch(err => {
+            res.status(400).json({message: 'Course description is required.'});
+            next(err);
+          });
       }
-  }).catch(function(error){
-      res.send(500, error);
-   });
-});*/
+}));
 
 /* PUT update course. */
 router.put("/:id", authenticate (req, res, next) => {
