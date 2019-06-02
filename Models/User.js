@@ -9,6 +9,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     firstName: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
         notEmpty: {
           msg: "First name is required"
@@ -17,6 +18,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     lastName: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
         notEmpty: {
           msg: "Last name is required"
@@ -25,6 +27,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     emailAddress: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
         notEmpty: {
           msg: "Email is required"
@@ -33,6 +36,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     password: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
         notEmpty: {
           msg: "Password is required"
