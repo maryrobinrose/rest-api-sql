@@ -36,7 +36,7 @@ router.get('/', (req, res) => {
 
 /* GET course by ID. */
 router.get('/:id', (req, res, next) => {
-  Course.findOne({
+  Course.findAll({
       where: { id: req.params.id },
       attributes: [
         'id',
@@ -67,7 +67,15 @@ router.get('/:id', (req, res, next) => {
     });
 });
 
-/* POST new course. */
-router.post('/:id', authenticate, (req, res, next) => {
-  
-});
+/* POST create new course. */
+router.post('/', authenticate, (req, res, next) => {
+    if(req.body.author && req.body.quote){
+        const quote = await records.createQuote({
+            quote: req.body.quote,
+            author: req.body.author
+        });
+        res.status(201).json(course);
+    } else {
+        res.status(400).json({message: 'Course description is required.'});
+    }
+}));
