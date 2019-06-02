@@ -113,11 +113,28 @@ router.put(''/:id', authenticate (req, res, next) => {
         //show error
         res.status(404).json({message: 'Course Not Found'});
       } else {
-        //
+        //Updated course info
+        const updateCourse = {
+          id: req.body.id,
+          title: req.body.title,
+          description: req.body.description,
+          estimatedTime: req.body.estimatedTime,
+          materialsNeeded: req.body.materialsNeeded
+        };
+        //Update course
+        course.update(updateCourse);
       }
+    })
+    .then (updateCourse => {
+      res.status(204).json(course);
+    })
+    .catch(err => {
+      err.status = 400;
+      next(err);
+  });
 
 
-  //Notes from docs
+  //Notes from docs, videos
   /*
   asyncHandler(async(req,res) => {
     const quote = await records.getQuote(req.params.id);
@@ -185,17 +202,29 @@ User.create({ username: 'fnord', job: 'omnomnom' })
 
 /* Delete individual course. */
 router.delete('/:id', authenticate (req,res) => {
-  Course.findByPk(req.params.id)
+  Course.findOne({ where: {title: req.params.id} })
     .then(course => {
+      //If course doesn't exist
       if (!course) {
-
+        //Show error
+        res.status(404).json({message: 'Course Not Found'});
+      } else {
+        return course.destroy();
       }
     })
-    return course.destroy();
-    const quote = await records.getQuote(req.params.id);
-    await records.deleteQuote(quote);
-    res.status(204).end();
+    .then (() => {
+      res.status(204).json(course);
+    })
+    .catch(err => {
+      err.status = 400;
+      next(err);
+  });
 }));
+
+//from examples
+/*const quote = await records.getQuote(req.params.id);
+await records.deleteQuote(quote);
+res.status(204).end();*/
 
 //From project 8
 /*router.delete("/:id", (req, res, next) => {
