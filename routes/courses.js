@@ -64,7 +64,7 @@ router.get('/:id', (req, res, next) => {
           err.status = 400;
           next(err);
         }
-    })
+      })
       .catch(err => {
         err.status = 400;
         next(err);
