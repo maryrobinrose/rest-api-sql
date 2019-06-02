@@ -94,10 +94,10 @@ router.post('/', authenticate, (req, res, next) => {
         };
         Course.create(newCourse)
           .then (newCourse => {
-            res.status(201).json(course);
+            res.status(201).end();
           })
           .catch(err => {
-            res.status(400).json({message: 'Course description is required.'});
+            res.status(400).end();
             next(err);
           });
       }
