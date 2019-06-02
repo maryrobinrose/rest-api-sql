@@ -30,7 +30,9 @@ const app = express();
 app.use(morgan('dev'));
 
 // TODO setup your api routes here
-app.use('/api', routes);
+app.use('/api', require('./routes/index'));
+app.use('/api/user', require('./routes/user'));
+app.use('/api/courses', require('./routes/courses'));
 
 
 // setup a friendly greeting for the root route
