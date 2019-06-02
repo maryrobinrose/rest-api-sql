@@ -19,10 +19,43 @@ const bcryptjs = require('bcryptjs');
    const credentials = authenticate(req);
 
 
+   //from unit 9
+   /*if (credentials) {
+       // Look for a user whose `username` matches the credentials `name` property.
+       const user = users.find(u => u.username === credentials.name);
+
+       if (user) {
+         const authenticated = bcryptjs
+           .compareSync(credentials.pass, user.password);
+         if (authenticated) {
+           console.log(`Authentication successful for username: ${user.username}`);
+
+           // Store the user on the Request object.
+           req.currentUser = user;
+         } else {
+           message = `Authentication failure for username: ${user.username}`;
+         }
+       } else {
+         message = `User not found for username: ${credentials.name}`;
+       }
+     } else {
+       message = 'Auth header not found';
+     }
+
+     if (message) {
+       console.warn(message);
+       res.status(401).json({ message: 'Access Denied' });
+     } else {
+       next();
+     }
+   };*/
+
+
+
 //from https://www.npmjs.com/package/basic-auth
 // Check credentials
   // The "check" function will typically be against your user store
-  if (!credentials || !check(credentials.name, credentials.pass)) {
+  /*if (!credentials || !check(credentials.name, credentials.pass)) {
     res.statusCode = 401
     res.setHeader('WWW-Authenticate', 'Basic realm="example"')
     res.end('Access denied')
@@ -40,4 +73,4 @@ function check (name, pass) {
   valid = compare(pass, 'secret') && valid
 
   return valid
-}
+}*/
