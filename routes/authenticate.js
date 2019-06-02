@@ -21,36 +21,33 @@ const bcryptjs = require('bcryptjs');
    //If user's credentials are valid
    if (credentials) {
     //Look for a user whose email address matches
-    User.findOne({ where: emailAddress: req.body.emailAddress})
-       const user = users.find(u => u.username === credentials.name);
+    User.findOne({ where: emailAddress: credentials.emailAddress})
+       .then (user => {
        if (user) {
          const authenticated = bcryptjs
            .compareSync(credentials.pass, user.password);
          if (authenticated) {
            console.log(`Authentication successful for username: ${user.username}`);
-   //from unit 9
-   /*
-           // Store the user on the Request object.
-           req.currentUser = user;
-         } else {
-           message = `Authentication failure for username: ${user.username}`;
-         }
-       } else {
-         message = `User not found for username: ${credentials.name}`;
-       }
+       })
+       // Store the user on the Request object.
+       req.currentUser = user;
      } else {
-       message = 'Auth header not found';
+       message = `Authentication failure for username: ${user.username}`;
      }
-
-     if (message) {
-       console.warn(message);
-       res.status(401).json({ message: 'Access Denied' });
      } else {
-       next();
+       message = `User not found for username: ${credentials.name}`;
      }
-   };*/
+   } else {
+     message = 'Auth header not found';
+   }
 
-
+   if (message) {
+     console.warn(message);
+     res.status(401).json({ message: 'Access Denied' });
+   } else {
+     next();
+   }
+  };
 
 //from https://www.npmjs.com/package/basic-auth
 // Check credentials
