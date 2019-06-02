@@ -3,7 +3,7 @@ const morgan = require('morgan');
 const router = express.Router();
 const User = require("../models").User;
 const Sequelize = require('sequelize');
-const authenticateUser = require('./auth');
+const authenticateUser = require('basic-auth');
 const bcryptjs = require("bcryptjs");
 
 const { check, validationResult } = require('express-validator/check');
@@ -33,7 +33,6 @@ router.post('/', (req, res, next) => {
         next(err);
 
       } else {
-
         const newUser = {
           firstName: req.currentUser.firstName,
           lastName: req.currentUser.lastName,
