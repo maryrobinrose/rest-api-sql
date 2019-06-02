@@ -76,6 +76,12 @@ router.get('/:id', (req, res, next) => {
 
 /* POST create new course. */
 router.post('/', authenticate, (req, res, next) => {
+  Project.findOne({ where: {title: 'aProject'} }).then(project => {
+  // project will be the first entry of the Projects table with the title 'aProject' || null
+})
+
+
+
   Course.create(req.body)
     .then(course => {
       if(req.body.course) {
