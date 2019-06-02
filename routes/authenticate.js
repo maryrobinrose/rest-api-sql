@@ -15,21 +15,21 @@ const bcryptjs = require('bcryptjs');
  const authenticate = (req, res, next) => {
    let message = null;
 
-   // Get the user's credentials from the Authorization header.
+   //Get the user's credentials from the Authorization header.
    const credentials = authenticate(req);
 
-
-   //from unit 9
-   /*if (credentials) {
-       // Look for a user whose `username` matches the credentials `name` property.
+   //If user's credentials are valid
+   if (credentials) {
+    //Look for a user whose email address matches
+    User.findOne({ where: emailAddress: req.body.emailAddress})
        const user = users.find(u => u.username === credentials.name);
-
        if (user) {
          const authenticated = bcryptjs
            .compareSync(credentials.pass, user.password);
          if (authenticated) {
            console.log(`Authentication successful for username: ${user.username}`);
-
+   //from unit 9
+   /*
            // Store the user on the Request object.
            req.currentUser = user;
          } else {
