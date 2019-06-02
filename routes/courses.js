@@ -102,3 +102,68 @@ router.post('/', authenticate, (req, res, next) => {
       res.send(500, error);
    });
 });*/
+
+/* PUT update course. */
+router.put("/:id", (req, res, next) => {
+  asyncHandler(async(req,res) => {
+    const quote = await records.getQuote(req.params.id);
+    if(quote){
+        quote.quote = req.body.quote;
+        quote.author = req.body.author;
+
+        await records.updateQuote(quote);
+        res.status(204).end();
+    } else {
+        res.status(404).json({message: "Quote Not Found"});
+    }
+}));
+
+// From project 8
+/* PUT update book. */
+/*router.put("/:id", function(req, res, next){
+  Book.findByPk(req.params.id).then(function(book){
+    if(book) {
+      return book.update(req.body);
+    } else {
+      res.send(404);
+    }
+    //Updated book
+  }).then(function(book){
+    res.redirect("/books/" + book.id);
+  }).catch(function(error){
+      if(error.name === "SequelizeValidationError") {
+        var book = Book.build(req.body);
+        book.id = req.params.id;
+        res.render("books/update-book", {book: book, errors: error.errors, title: "Update Book"})
+      } else {
+        throw error;
+      }
+  }).catch(function(error){
+      res.send(500, error);
+   });
+});*/
+
+/* Delete individual course. */
+router.delete("/quotes/:id", asyncHandler(async(req,res, next) => {
+    const quote = await records.getQuote(req.params.id);
+    await records.deleteQuote(quote);
+    res.status(204).end();
+}));
+
+//From project 8
+/*router.delete("/:id", (req, res, next) => {
+  Book.findByPk(req.params.id).then(function(book){
+    if(book) {
+      return book.destroy();
+    } else {
+      res.send(404);
+    }
+  }).then(function(){
+      res.redirect("/books");
+  }).catch(function(error){
+      res.send(500, error);
+   });
+});*/
+
+
+module.exports = router;
