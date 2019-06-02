@@ -45,7 +45,6 @@ router.get('/:id', (req, res, next) => {
         'description',
         'estimatedTime',
         'materialsNeeded',
-        'userId'
       ],
       include: [
         {
