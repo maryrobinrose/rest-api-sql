@@ -56,7 +56,7 @@ router.get('/:id', (req, res, next) => {
       .then(course => {
         if(course) {
           res.status(200);
-          //Course list 
+          //Course list
           res.json({ course });
         } else {
           //Show error if no course matches
@@ -65,4 +65,9 @@ router.get('/:id', (req, res, next) => {
           next(err);
         }
     });
+});
+
+/* POST new course. */
+router.post('/:id', authenticate, (req, res, next) => {
+  
 });
