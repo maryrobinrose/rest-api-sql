@@ -4,7 +4,7 @@ const router = express.Router();
 const User = require("../models").User;
 const Sequelize = require('sequelize');
 const authenticateUser = require('basic-auth');
-const bcryptjs = require("bcryptjs");
+const bcryptjs = require('bcryptjs');
 
 const { check, validationResult } = require('express-validator/check');
 
@@ -39,17 +39,17 @@ router.post('/', (req, res, next) => {
           emailAddress: req.currentUser.emailAddress,
           password: req.currentUser.password
         };
-        // Hash password
+        //Hash password -- https://www.npmjs.com/package/bcryptjs
         newUser.password = bcryptjs.hashSync(newUser.password);
 
       }
-        // Create new user
+        //Create new user
         User.create(newUser)
           .then (() => {
             res.location('/');
             res.status(201).end();
           })
-          // Catch errors
+          //Catch errors
           .catch(err => {
             err.status = 400;
             next(err);
