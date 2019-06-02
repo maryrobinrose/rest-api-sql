@@ -65,8 +65,12 @@ router.get('/:id', (req, res, next) => {
           err.status = 400;
           next(err);
         }
-    });
-});
+    })
+      .catch(err => {
+        err.status = 400;
+        next(err);
+      });
+  });
 
 //POST /api/courses 201 - Creates a course, sets the Location header to the URI for the course, and returns no content
 
