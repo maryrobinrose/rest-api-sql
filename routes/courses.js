@@ -97,7 +97,7 @@ router.post('/', authenticate, (req, res, next) => {
             res.status(201).end();
           })
           .catch(err => {
-            res.status(400).end();
+            err.status = 400;
             next(err);
           });
       }
@@ -125,7 +125,7 @@ router.put(''/:id', authenticate (req, res, next) => {
       }
     })
     .then (updateCourse => {
-      res.status(204).json(course);
+      res.status(204).end();
     })
     .catch(err => {
       err.status = 400;
