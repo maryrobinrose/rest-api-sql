@@ -3,13 +3,13 @@ const morgan = require('morgan');
 const router = express.Router();
 const User = require("../models").User;
 const Sequelize = require('sequelize');
-const authenticateUser = require('basic-auth');
+const authenticate = require('basic-auth');
 const bcryptjs = require('bcryptjs');
 
 const { check, validationResult } = require('express-validator/check');
 
 /* GET current User. */
-router.get('/', authenticateUser, (req, res) => {
+router.get('/', authenticate, (req, res) => {
   const user = req.curentUser;
   res.status(200);
   res.json({
