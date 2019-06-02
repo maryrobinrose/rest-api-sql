@@ -71,17 +71,17 @@ router.get('/:id', (req, res, next) => {
 
 /* POST create new course. */
 router.post('/', authenticate, (req, res, next) => {
-  Course.create(req.body).then(book => {
-
+  Course.create(req.body)
+    .then(course => {
+      if(req.body.course) {
+          const newCourse = {
+            id: req.body.id,
+            title: req.body.title,
+            description: req.body.description,
+            estimatedTime: req.body.estimatedTime,
+            materialsNeeded: req.body.materialsNeeded
+          };
   })
-    if(req.body.course){
-        const newCourse = {
-          id: req.body.id,
-          title: req.body.title,
-          description: req.body.description,
-          estimatedTime: req.body.estimatedTime,
-          materialsNeeded: req.body.materialsNeeded
-        }
         res.status(201).json(course);
     } else {
         res.status(400).json({message: 'Course description is required.'});
@@ -104,7 +104,7 @@ router.post('/', authenticate, (req, res, next) => {
 });*/
 
 /* PUT update course. */
-router.put("/:id", (req, res, next) => {
+router.put("/:id", authenticate (req, res, next) => {
   asyncHandler(async(req,res) => {
     const quote = await records.getQuote(req.params.id);
     if(quote){
@@ -144,7 +144,14 @@ router.put("/:id", (req, res, next) => {
 });*/
 
 /* Delete individual course. */
-router.delete("/quotes/:id", asyncHandler(async(req,res, next) => {
+router.delete('/:id', authenticate (req,res) => {
+  Course.findByPk(req.params.id)
+    .then(course => {
+      if (!course) {
+
+      }
+    })
+    return course.destroy();
     const quote = await records.getQuote(req.params.id);
     await records.deleteQuote(quote);
     res.status(204).end();
