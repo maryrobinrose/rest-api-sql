@@ -9,7 +9,9 @@ const bcryptjs = require('bcryptjs');
 
 /* GET course list. */
 router.get('/', (req, res) => {
+  //Find all courses
   Course.findAll({
+    //Object to pass to findAll to return data
     attributes: [
       'id',
       'title',
@@ -18,6 +20,7 @@ router.get('/', (req, res) => {
       'materialsNeeded',
       'userId'
     ],
+    //Include which user is associated with each course
     include: [
       {
         model: User,
@@ -27,8 +30,10 @@ router.get('/', (req, res) => {
   })
     .then(courses => {
       res.status(200);
+      //Bring back courses from JSON
       res.json({ courses });
     })
+    //Catch the errors
     .catch(err => {
       err.status = 400;
       next(err);
@@ -37,7 +42,9 @@ router.get('/', (req, res) => {
 
 /* GET course by ID. */
 router.get('/:id', (req, res, next) => {
-  Course.findAll({
+  //Find one course
+  Course.findOne({
+      //Where the ID matches
       where: { id: req.params.id },
       attributes: [
         'id',
@@ -45,7 +52,9 @@ router.get('/:id', (req, res, next) => {
         'description',
         'estimatedTime',
         'materialsNeeded',
+        'userId'
       ],
+      //Include user connected with course
       include: [
         {
           model: User,
@@ -54,9 +63,10 @@ router.get('/:id', (req, res, next) => {
       ]
     })
       .then(course => {
+        //If the course matches
         if(course) {
           res.status(200);
-          //Course list
+          //Return the course
           res.json({ course });
         } else {
           //Show error if no course matches
@@ -71,31 +81,36 @@ router.get('/:id', (req, res, next) => {
       });
   });
 
-//POST /api/courses 201 - Creates a course, sets the Location header to the URI for the course, and returns no content
-
 /* POST create new course. */
 router.post('/', authenticate, (req, res, next) => {
   //First check to see if course already exists
   Course.findOne({ where: {title: req.body.title} })
     .then(course => {
+      //If course already exists, show error
       if(course) {
         const err = new Error('This course already exists.')
         err.status = 400;
         next(err);
       } else {
-        //If the course is new, create new course
         //Variable holds new course info
         const newCourse = {
           id: req.body.id,
           title: req.body.title,
           description: req.body.description,
           estimatedTime: req.body.estimatedTime,
-          materialsNeeded: req.body.materialsNeeded
+          materialsNeeded: req.body.materialsNeeded,
+          //Current user's id to connect to new course
+          Userid: req.currentUser.id
         };
+        //If the course is new, create new course
         Course.create(newCourse)
-          .then (newCourse => {
+          .then (() => {
+            //Set location header
+            res.location('/');
+            //End, return no content
             res.status(201).end();
           })
+          //Catch the erros
           .catch(err => {
             err.status = 400;
             next(err);
