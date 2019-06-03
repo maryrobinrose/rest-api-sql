@@ -84,7 +84,7 @@ router.get('/:id', (req, res, next) => {
 /* POST create new course. */
 router.post('/', authenticate, (req, res, next) => {
   //First check to see if course already exists
-  Course.findOne({ where: {title: req.body.title} })
+  Course.findOne({ where: {id: req.body.title} })
     .then(course => {
       //If course already exists, show error
       if(course) {
@@ -116,15 +116,16 @@ router.post('/', authenticate, (req, res, next) => {
             next(err);
           });
       }
-}));
+});
 
 /* PUT update course. */
 router.put(''/:id', authenticate (req, res, next) => {
-  Course.findOne({ where: {title: req.params.id} })
+  //Find one course to update
+  Course.findOne({ where: {id: req.params.id} })
     .then(course => {
       //If the course doesn't exist
       if(!course) {
-        //show error
+        //Show error
         res.status(404).json({message: 'Course Not Found'});
       } else {
         //Updated course info
@@ -133,127 +134,47 @@ router.put(''/:id', authenticate (req, res, next) => {
           title: req.body.title,
           description: req.body.description,
           estimatedTime: req.body.estimatedTime,
-          materialsNeeded: req.body.materialsNeeded
+          materialsNeeded: req.body.materialsNeeded,
+          //Current user's id to connect to new course
+          userId: req.currentUser.id
         };
-        //Update course
+        //If course does exist, update it
         course.update(updateCourse);
       }
     })
     .then (updateCourse => {
+      //Return no content and end the request
       res.status(204).end();
     })
+    //Catch the errors
     .catch(err => {
       err.status = 400;
       next(err);
   });
 
-
-  //Notes from docs, videos
-  /*
-  asyncHandler(async(req,res) => {
-    const quote = await records.getQuote(req.params.id);
-    if(quote){
-        quote.quote = req.body.quote;
-        quote.author = req.body.author;
-
-        await records.updateQuote(quote);
-        res.status(204).end();
-    } else {
-        res.status(404).json({message: "Quote Not Found"});
-    }
-}));
-
-User.create({ username: 'fnord', job: 'omnomnom' })
-  .then(() => User.findOrCreate({where: {username: 'fnord'}, defaults: {job: 'something else'}}))
-  .then(([user, created]) => {
-    console.log(user.get({
-      plain: true
-    }))
-    console.log(created)
-
-    /*
-    In this example, findOrCreate returns an array like this:
-    [ {
-        username: 'fnord',
-        job: 'omnomnom',
-        id: 2,
-        createdAt: Fri Mar 22 2013 21: 28: 34 GMT + 0100(CET),
-        updatedAt: Fri Mar 22 2013 21: 28: 34 GMT + 0100(CET)
-      },
-      false
-    ]
-    The array returned by findOrCreate gets spread into its 2 parts by the array spread on line 3, and
-    the parts will be passed as 2 arguments to the callback function beginning on line 69, which will
-    then treat them as "user" and "created" in this case. (So "user" will be the object from index 0
-    of the returned array and "created" will equal "false".)
-
-  })*/
-
-// From project 8
-/* PUT update book. */
-/*router.put("/:id", function(req, res, next){
-  Book.findByPk(req.params.id).then(function(book){
-    if(book) {
-      return book.update(req.body);
-    } else {
-      res.send(404);
-    }
-    //Updated book
-  }).then(function(book){
-    res.redirect("/books/" + book.id);
-  }).catch(function(error){
-      if(error.name === "SequelizeValidationError") {
-        var book = Book.build(req.body);
-        book.id = req.params.id;
-        res.render("books/update-book", {book: book, errors: error.errors, title: "Update Book"})
-      } else {
-        throw error;
-      }
-  }).catch(function(error){
-      res.send(500, error);
-   });
-});*/
-
 /* Delete individual course. */
 router.delete('/:id', authenticate (req,res) => {
-  Course.findOne({ where: {title: req.params.id} })
+  //Find one course to delete
+  Course.findOne({ where: {id: req.params.id} })
     .then(course => {
       //If course doesn't exist
       if (!course) {
         //Show error
         res.status(404).json({message: 'Course Not Found'});
       } else {
+        //Delete the course
         return course.destroy();
       }
     })
     .then (() => {
+      //Return no content and end the request
       res.status(204).json(course);
     })
+    //Catch the errors
     .catch(err => {
       err.status = 400;
       next(err);
   });
 }));
-
-//from examples
-/*const quote = await records.getQuote(req.params.id);
-await records.deleteQuote(quote);
-res.status(204).end();*/
-
-//From project 8
-/*router.delete("/:id", (req, res, next) => {
-  Book.findByPk(req.params.id).then(function(book){
-    if(book) {
-      return book.destroy();
-    } else {
-      res.send(404);
-    }
-  }).then(function(){
-      res.redirect("/books");
-  }).catch(function(error){
-      res.send(500, error);
-   });
-});*/
-
 
 module.exports = router;
