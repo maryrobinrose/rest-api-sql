@@ -175,6 +175,6 @@ router.delete('/:id', authenticate, (req,res) => {
       err.status = 400;
       next(err);
   });
-}));
+});
 
 module.exports = router;
