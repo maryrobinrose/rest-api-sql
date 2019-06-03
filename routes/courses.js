@@ -174,7 +174,7 @@ router.delete('/:id', authenticate, (req,res) => {
     .catch(err => {
       err.status = 400;
       next(err);
-  });
+    })
 });
 
 module.exports = router;
