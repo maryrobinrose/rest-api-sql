@@ -6,12 +6,11 @@ const Sequelize = require('sequelize');
 const authenticate = require('basic-auth');
 const bcryptjs = require('bcryptjs');
 
-const { check, validationResult } = require('express-validator/check');
-
-/* GET current User. */
+/* GET current user (Read users that already exist) */
 router.get('/', authenticate, (req, res) => {
-  const user = req.curentUser;
+  //OK - working
   res.status(200);
+  //Bring back formatted JSON data
   res.json({
       id: req.currentUser.id,
       firstName: req.currentUser.firstName,
@@ -22,22 +21,25 @@ router.get('/', authenticate, (req, res) => {
 
 /* POST create user. */
 router.post('/', (req, res, next) => {
-
-  //If user already exists
+  //If user already exists, find the user
   User.findOne({ where: { emailAddress: req.body.emailAddress } })
-    .then(email => {
-      // If user already exists
-      if (email) {
+    .then(emailAddress => {
+      // If user already exists based on emaill address
+      if (emailAddress) {
+        //Create the error
         const err = new Error('This user already exists.')
+        //Bad request
         err.status = 400;
+        //Express catches and processes error
         next(err);
-
+        //If user doesn'e exist
       } else {
+        //Create place for new user
         const newUser = {
-          firstName: req.currentUser.firstName,
-          lastName: req.currentUser.lastName,
-          emailAddress: req.currentUser.emailAddress,
-          password: req.currentUser.password
+          firstName: req.body.firstName,
+          lastName: req.body.lastName,
+          emailAddress: req.body.emailAddress,
+          password: req.body.password
         };
         //Hash password -- https://www.npmjs.com/package/bcryptjs
         newUser.password = bcryptjs.hashSync(newUser.password);
@@ -46,7 +48,9 @@ router.post('/', (req, res, next) => {
         //Create new user
         User.create(newUser)
           .then (() => {
+            //Set location header
             res.location('/');
+            //End, return no content
             res.status(201).end();
           })
           //Catch errors
