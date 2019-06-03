@@ -12,7 +12,8 @@ const bcryptjs = require('bcryptjs');
  * @param {Function} next - The function to call to pass execution to the next middleware.
  */
 
- const authenticate = (req, res, next) => {
+ module.exports (req, res, next) => {
+   //Hold errors
    let message = null;
 
    //Get the user's credentials from the Authorization header.
@@ -21,20 +22,25 @@ const bcryptjs = require('bcryptjs');
    //If user's credentials are valid
    if (credentials) {
     //Look for a user whose email address matches
-    User.findOne({ where: emailAddress: credentials.emailAddress})
+    User.findOne({ where: emailAddress: credentials.name})
        .then (user => {
+         //If email exists
        if (user) {
+         //Check the password
          const authenticated = bcryptjs
            .compareSync(credentials.pass, user.password);
+        //If password is a match
          if (authenticated) {
            console.log(`Authentication successful for username: ${user.username}`);
        })
-       // Store the user on the Request object.
-       req.currentUser = user;
+         // Store the user on the Request object.
+         req.currentUser = user;
+       } else {
+         //If password isn't a match
+         message = `Authentication failure for username: ${user.username}`;
+       }
      } else {
-       message = `Authentication failure for username: ${user.username}`;
-     }
-     } else {
+       //If user isn't a match
        message = `User not found for username: ${credentials.name}`;
      }
    } else {
@@ -48,26 +54,3 @@ const bcryptjs = require('bcryptjs');
      next();
    }
   };
-
-//from https://www.npmjs.com/package/basic-auth
-// Check credentials
-  // The "check" function will typically be against your user store
-  /*if (!credentials || !check(credentials.name, credentials.pass)) {
-    res.statusCode = 401
-    res.setHeader('WWW-Authenticate', 'Basic realm="example"')
-    res.end('Access denied')
-  } else {
-    res.end('Access granted')
-  }
-})
-
-// Basic function to validate credentials for example
-function check (name, pass) {
-  var valid = true
-
-  // Simple method to prevent short-circut and use timing-safe compare
-  valid = compare(name, 'john') && valid
-  valid = compare(pass, 'secret') && valid
-
-  return valid
-}*/
