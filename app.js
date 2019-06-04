@@ -4,6 +4,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const Sequelize = require('sequelize');
+const models = require('./models').sequelize;
 
 // construct the database
 const db = new Sequelize({
@@ -28,6 +29,9 @@ const app = express();
 
 // setup morgan which gives us http request logging
 app.use(morgan('dev'));
+
+//Setup JSON body parser
+app.use(express.json());
 
 // TODO setup your api routes here
 app.use('/api', require('./routes/index'));
