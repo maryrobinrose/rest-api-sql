@@ -12,7 +12,7 @@ _An app that provides a way for users to administer a school database containing
 ## Setup And Installation
 
 * Clone the project to a local directory
-* Run npm install: npm install
+* Run npm install: `npm install`
 * Seed SQLite database: npm run seed
 * Run npm start: npm start
 * Open http://localhost:5000 in the browser
@@ -27,7 +27,7 @@ If you have any issues or questions, please email me at maryrobinrose@gmail.com.
 
 ## Technologies Used
 
-This project was created with HTML, CSS, JavaScript, and Express.
+This project was created with HTML, CSS, JavaScript, SQL and Express.
 
 ## Legal
 
