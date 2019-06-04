@@ -113,6 +113,7 @@ router.post('/', authenticate, (req, res, next) => {
             next(err);
           });
       }
+    })
 });
 
 /* PUT update course. */
