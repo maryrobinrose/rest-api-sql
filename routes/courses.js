@@ -151,7 +151,7 @@ router.put('/:id', authenticate, (req, res) => {
   });
 
 /* Delete individual course. */
-router.delete('/:id', authenticate, (req,res, next) => {
+router.delete('/:id', authenticate, (req,res) => {
   //Find one course to delete
   Course.findOne({ where: {id: req.params.id} })
     .then(course => {
