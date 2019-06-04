@@ -1,11 +1,9 @@
 const express = require('express');
-const morgan = require('morgan');
 const router = express.Router();
 const Course = require('../models').Course;
 const User = require('../models').User;
 const Sequelize = require('sequelize');
 const authenticate = require('./authenticate');
-const bcryptjs = require('bcryptjs');
 
 /* GET course list. */
 router.get('/', (req, res) => {
