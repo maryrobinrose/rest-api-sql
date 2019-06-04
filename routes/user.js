@@ -57,8 +57,12 @@ router.post('/', (req, res, next) => {
             next(err);
           });
       }
-
       })
+      //Catch errors
+      .catch(err => {
+        err.status = 400;
+        next(err);
+      });
   });
 
 
