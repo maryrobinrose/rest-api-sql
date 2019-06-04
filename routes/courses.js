@@ -149,30 +149,32 @@ router.put('/:id', authenticate, (req, res) => {
       err.status = 400;
       next(err);
   });
+});
 
 /* Delete individual course. */
 router.delete('/:id', authenticate, (req,res) => {
-  //Find one course to delete
-  Course.findOne({ where: {id: req.params.id} })
-    .then(course => {
-      //If course doesn't exist
-      if (!course) {
-        //Show error
-        res.status(404).json({message: 'Course Not Found'});
-      } else {
-        //Delete the course
-        return course.destroy();
-      }
-    })
-    .then (() => {
-      //Return no content and end the request
-      res.status(204).end();
-    })
-    //Catch the errors
-    .catch(err => {
-      err.status = 400;
-      next(err);
-    })
+    //Find one course to delete
+    Course.findOne({ where: {id: req.params.id} })
+      .then(course => {
+        //If course doesn't exist
+        if (!course) {
+          //Show error
+          res.status(404).json({message: 'Course Not Found'});
+        } else {
+          //Delete the course
+          return course.destroy();
+        }
+      })
+      .then (() => {
+        //Return no content and end the request
+        res.status(204).end();
+      })
+      //Catch the errors
+      .catch(err => {
+        err.status = 400;
+        next(err);
+      });
 });
+
 
 module.exports = router;
