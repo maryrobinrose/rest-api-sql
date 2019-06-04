@@ -41,8 +41,8 @@ router.post('/', (req, res, next) => {
           emailAddress: req.body.emailAddress,
           password: req.body.password
         };
-        //Hash password -- https://www.npmjs.com/package/bcryptjs
-        newUser.password = bcryptjs.hashSync(newUser.password);
+          //Hash password -- https://www.npmjs.com/package/bcryptjs
+          newUser.password = bcryptjs.hashSync(newUser.password);
         //Create new user
         User.create(newUser)
           .then (() => {
