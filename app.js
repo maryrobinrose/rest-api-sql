@@ -32,7 +32,7 @@ app.use(morgan('dev'));
 // TODO setup your api routes here
 app.use('/api', require('./routes/index'));
 app.use('/api/users', require('./routes/user'));
-//app.use('/api/courses', require('./routes/courses'));
+app.use('/api/courses', require('./routes/courses'));
 
 
 // setup a friendly greeting for the root route
