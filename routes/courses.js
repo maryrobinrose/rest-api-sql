@@ -99,7 +99,6 @@ router.post('/', authenticate, (req, res, next) => {
           description: req.body.description,
           estimatedTime: req.body.estimatedTime,
           materialsNeeded: req.body.materialsNeeded,
-          //Current user's id to connect to new course
           Userid: req.currentUser.id
         };
         //If the course is new, create new course
@@ -142,7 +141,7 @@ router.put('/:id', authenticate, (req, res) => {
         course.update(updateCourse);
       }
     })
-    .then (updateCourse => {
+    .then (() => {
       //Return no content and end the request
       res.status(204).end();
     })
