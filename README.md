@@ -1,38 +1,36 @@
 
-# Full Stack JavaScript Techdegree v2 - REST API Project
+# Unit 9: REST API Project
 
-## Overview of the Provided Project Files
+#### Rest API Using Express
 
-We've supplied the following files for you to use: 
+#### By **Mary Robin Rose**
 
-* The `seed` folder contains a starting set of data for your database in the form of a JSON file (`data.json`) and a collection of files (`context.js`, `database.js`, and `index.js`) that can be used to create your app's database and populate it with data (we'll explain how to do that below).
-* We've included a `.gitignore` file to ensure that the `node_modules` folder doesn't get pushed to your GitHub repo.
-* The `app.js` file configures Express to serve a simple REST API. We've also configured the `morgan` npm package to log HTTP requests/responses to the console. You'll update this file with the routes for the API. You'll update this file with the routes for the API.
-* The `nodemon.js` file configures the nodemon Node.js module, which we are using to run your REST API.
-* The `package.json` file (and the associated `package-lock.json` file) contain the project's npm configuration, which includes the project's dependencies.
-* The `RESTAPI.postman_collection.json` file is a collection of Postman requests that you can use to test and explore your REST API.
+## Description
 
-## Getting Started
+_An app that provides a way for users to administer a school database containing information about courses._
 
-To get up and running with this project, run the following commands from the root of the folder that contains this README file.
+## Setup And Installation
 
-First, install the project's dependencies using `npm`.
+* Clone the project to a local directory
+* Run npm install: npm install
+* Seed SQLite database: npm run seed
+* Run npm start: npm start
+* Open http://localhost:5000 in the browser
 
-```
-npm install
+## Known Bugs
 
-```
+_None_
 
-Second, seed the SQLite database.
+## Support and Contact Details
 
-```
-npm run seed
-```
+If you have any issues or questions, please email me at maryrobinrose@gmail.com.
 
-And lastly, start the application.
+## Technologies Used
 
-```
-npm start
-```
+This project was created with HTML, CSS, JavaScript, and Express.
 
-To test the Express server, browse to the URL [http://localhost:5000/](http://localhost:5000/).
+## Legal
+
+Copyright (c) 2019 Mary Robin Rose
+
+This software is licensed under the MIT License
