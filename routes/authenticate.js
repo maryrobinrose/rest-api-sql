@@ -36,11 +36,18 @@ const bcryptjs = require('bcryptjs');
          } else {
          //If password isn't a match
          message = `Authentication failure for username: ${user.username}`;
+         //Set status code
+         res.status(401);
+         //Show the message
+         res.json( {message: message} );
           }
       } else {
        //If user isn't a match
        message = `User not found for username: ${credentials.name}`;
-       res.status(400);
+       //Set status code
+       res.status(401);
+       //Show the message
+       res.json( {message: message} );
      }
    });
   } else {
