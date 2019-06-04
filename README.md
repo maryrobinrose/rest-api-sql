@@ -13,8 +13,8 @@ _An app that provides a way for users to administer a school database containing
 
 * Clone the project to a local directory
 * Run npm install: `npm install`
-* Seed SQLite database: npm run seed
-* Run npm start: npm start
+* Seed SQLite database: `npm run seed`
+* Run npm start: `npm start`
 * Open http://localhost:5000 in the browser
 
 ## Known Bugs
