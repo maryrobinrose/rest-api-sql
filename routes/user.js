@@ -3,7 +3,7 @@ const morgan = require('morgan');
 const router = express.Router();
 const User = require("../models").User;
 const Sequelize = require('sequelize');
-const authenticate = require('basic-auth');
+const authenticate = require('./authenticate');
 const bcryptjs = require('bcryptjs');
 
 /* GET current user (Read users that already exist) */

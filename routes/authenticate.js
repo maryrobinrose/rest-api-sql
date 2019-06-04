@@ -12,7 +12,7 @@ const bcryptjs = require('bcryptjs');
  * @param {Function} next - The function to call to pass execution to the next middleware.
  */
 
- module.exports (req, res, next) => {
+ module.exports = (req, res, next) => {
    //Hold errors
    let message = null;
 
@@ -22,7 +22,7 @@ const bcryptjs = require('bcryptjs');
    //If user's credentials are valid
    if (credentials) {
     //Look for a user whose email address matches
-    User.findOne({ where: emailAddress: credentials.name})
+    User.findOne({ where: { emailAddress: credentials.name }
        .then (user => {
          //If email exists
        if (user) {
