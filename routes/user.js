@@ -23,9 +23,9 @@ router.get('/', authenticate, (req, res) => {
 router.post('/', (req, res, next) => {
   //If user already exists, find the user
   User.findOne({ where: { emailAddress: req.body.emailAddress } })
-    .then(emailAddress => {
+    .then(user => {
       // If user already exists based on emaill address
-      if (emailAddress) {
+      if (user) {
         //Create the error
         const err = new Error('This user already exists.')
         //Bad request

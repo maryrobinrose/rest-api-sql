@@ -35,7 +35,7 @@ app.use(express.json());
 
 //Set up API routes
 app.use('/api', require('./routes/index'));
-//app.use('/api/users', require('./routes/user'));
+app.use('/api/users', require('./routes/user'));
 //app.use('/api/courses', require('./routes/courses'));
 
 
