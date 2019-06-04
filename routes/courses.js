@@ -68,7 +68,7 @@ router.get('/:id', (req, res, next) => {
           res.json({ course });
         } else {
           //Show error if no course matches
-          const err = new Error('This course does not exist.')
+          const err = new Error('This course does not exist.');
           err.status = 400;
           next(err);
         }
@@ -86,7 +86,7 @@ router.post('/', authenticate, (req, res, next) => {
     .then(course => {
       //If course already exists, show error
       if(course) {
-        const err = new Error('This course already exists.')
+        const err = new Error('This course already exists.');
         err.status = 400;
         next(err);
       } else {
