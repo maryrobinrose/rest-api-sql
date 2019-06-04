@@ -43,8 +43,6 @@ router.post('/', (req, res, next) => {
         };
         //Hash password -- https://www.npmjs.com/package/bcryptjs
         newUser.password = bcryptjs.hashSync(newUser.password);
-
-      }
         //Create new user
         User.create(newUser)
           .then (() => {
@@ -58,6 +56,8 @@ router.post('/', (req, res, next) => {
             err.status = 400;
             next(err);
           });
+      }
+
       })
   });
 
