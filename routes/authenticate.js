@@ -22,7 +22,7 @@ const bcryptjs = require('bcryptjs');
    //If user's credentials are valid
    if (credentials) {
     //Look for a user whose email address matches
-    User.findOne({ where: { emailAddress: credentials.name }
+    User.findOne({ where: { emailAddress: credentials.name } })
        .then (user => {
          //If email exists
        if (user) {
@@ -31,26 +31,20 @@ const bcryptjs = require('bcryptjs');
            .compareSync(credentials.pass, user.password);
         //If password is a match
          if (authenticated) {
-           console.log(`Authentication successful for username: ${user.username}`);
-       })
-         // Store the user on the Request object.
-         req.currentUser = user;
-       } else {
+           // Store the user on the Request object.
+           req.currentUser = user;
+         } else {
          //If password isn't a match
          message = `Authentication failure for username: ${user.username}`;
-       }
-     } else {
+          }
+      } else {
        //If user isn't a match
        message = `User not found for username: ${credentials.name}`;
+       res.status(400);
      }
-   } else {
+   });
+  } else {
      message = 'Auth header not found';
    }
 
-   if (message) {
-     console.warn(message);
-     res.status(401).json({ message: 'Access Denied' });
-   } else {
-     next();
-   }
   };
