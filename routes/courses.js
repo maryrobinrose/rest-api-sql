@@ -72,11 +72,11 @@ router.get('/:id', (req, res, next) => {
           err.status = 400;
           next(err);
         }
-      })
-      .catch(err => {
+      });
+      /*.catch(err => {
         err.status = 400;
         next(err);
-      });
+      });*/
   });
 
 /* POST create new course. */
@@ -110,7 +110,7 @@ router.post('/', authenticate, (req, res, next) => {
             //End, return no content
             res.status(201).end();
           })
-          //Catch the erros
+          //Catch the errors
           .catch(err => {
             err.status = 400;
             next(err);

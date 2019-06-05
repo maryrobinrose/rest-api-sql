@@ -57,13 +57,13 @@ router.post('/', (req, res, next) => {
             next(err);
           });
       }
-      })
-      //Catch errors
-      .catch(err => {
-        err.status = 400;
-        next(err);
-      });
-  });
+    })
+    //Catch errors
+    .catch(err => {
+      err.status = 400;
+      next(err);
+    });
+});
 
 
 module.exports = router;
