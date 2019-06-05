@@ -81,47 +81,51 @@ router.get('/:id', (req, res, next) => {
 
 /* POST create new course. */
 router.post('/', authenticate, (req, res, next) => {
+  if(!req.body.title) {
+    const err = new Error('Please enter a title.');
+    err.status = 400;
+    next(err);
+  } else {
 
-  /*conditional in your routing that checks if the required fields exist in req.body   and return the appropriate error message and status code if they don't.*/
-
-  //First check to see if course already exists
-  Course.findOne({ where: {title: req.body.title} })
-    .then(course => {
-      //If course already exists, show error
-      if(course) {
-        const err = new Error('This course already exists.');
-        err.status = 400;
-        next(err);
-      } else {
-        //Variable holds new course info
-        /*const newCourse = {
-          id: req.body.id,
-          title: req.body.title,
-          description: req.body.description,
-          estimatedTime: req.body.estimatedTime,
-          materialsNeeded: req.body.materialsNeeded,
-          Userid: req.currentUser.id
-        };*/
-        //If the course is new, create new course
-        Course.create(req.body)
-          .then (() => {
-            //Set location header
-            res.location('/');
-            //End, return no content
-            res.status(201).end();
-          })
-          //Catch the errors
-          .catch(err => {
+      //First check to see if course already exists
+      Course.findOne({ where: {title: req.body.title} })
+        .then(course => {
+          //If course already exists, show error
+          if(course) {
+            const err = new Error('This course already exists.');
             err.status = 400;
             next(err);
-          });
-      }
-    })
-    //Catch the erros
-    .catch(err => {
-      err.status = 400;
-      next(err);
-    });
+          } else {
+            //Variable holds new course info
+            /*const newCourse = {
+              id: req.body.id,
+              title: req.body.title,
+              description: req.body.description,
+              estimatedTime: req.body.estimatedTime,
+              materialsNeeded: req.body.materialsNeeded,
+              Userid: req.currentUser.id
+            };*/
+            //If the course is new, create new course
+            Course.create(req.body)
+              .then (() => {
+                //Set location header
+                res.location('/');
+                //End, return no content
+                res.status(201).end();
+              })
+              //Catch the errors
+              .catch(err => {
+                err.status = 400;
+                next(err);
+              });
+          }
+        })
+        //Catch the erros
+        .catch(err => {
+          err.status = 400;
+          next(err);
+        });
+  }
 });
 
 /* PUT update course. */
