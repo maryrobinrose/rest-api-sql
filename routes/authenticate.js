@@ -55,7 +55,7 @@ const bcryptjs = require('bcryptjs');
   } else {
      message = 'Auth header not found';
      res.status(401);
-     next(err).
-   }
+     next();
+  }
 
-  };
+};
