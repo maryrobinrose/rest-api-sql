@@ -81,8 +81,11 @@ router.get('/:id', (req, res, next) => {
 
 /* POST create new course. */
 router.post('/', authenticate, (req, res, next) => {
+
+  /*conditional in your routing that checks if the required fields exist in req.body   and return the appropriate error message and status code if they don't.*/
+
   //First check to see if course already exists
-  Course.findOne({ where: {id: req.body.title} })
+  Course.findOne({ where: {title: req.body.title} })
     .then(course => {
       //If course already exists, show error
       if(course) {
