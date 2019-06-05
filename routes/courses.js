@@ -117,6 +117,11 @@ router.post('/', authenticate, (req, res, next) => {
           });
       }
     })
+    //Catch the erros
+    .catch(err => {
+      err.status = 400;
+      next(err);
+    });
 });
 
 /* PUT update course. */
