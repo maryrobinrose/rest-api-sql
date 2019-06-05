@@ -31,8 +31,10 @@ const bcryptjs = require('bcryptjs');
            .compareSync(credentials.pass, user.password);
         //If password is a match
          if (authenticated) {
-           // Store the user on the Request object.
+           //Store the user on the Request object.
            req.currentUser = user;
+           //Go to the next middleware
+           next();
          } else {
          //If password isn't a match
          message = `Authentication failure for username: ${user.username}`;
@@ -52,6 +54,8 @@ const bcryptjs = require('bcryptjs');
    });
   } else {
      message = 'Auth header not found';
+     res.status(401);
+     next(err).
    }
 
   };
