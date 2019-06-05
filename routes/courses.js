@@ -91,16 +91,16 @@ router.post('/', authenticate, (req, res, next) => {
         next(err);
       } else {
         //Variable holds new course info
-        const newCourse = {
+        /*const newCourse = {
           id: req.body.id,
           title: req.body.title,
           description: req.body.description,
           estimatedTime: req.body.estimatedTime,
           materialsNeeded: req.body.materialsNeeded,
           Userid: req.currentUser.id
-        };
+        };*/
         //If the course is new, create new course
-        Course.create(newCourse)
+        Course.create(req.body)
           .then (() => {
             //Set location header
             res.location('/');
