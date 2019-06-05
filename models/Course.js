@@ -25,7 +25,7 @@ module.exports = function(sequelize, DataTypes) {
         }
       }
     },
-    esimatedTime: {
+    estimatedTime: {
       type: DataTypes.STRING,
       allowNull: true,
     },
