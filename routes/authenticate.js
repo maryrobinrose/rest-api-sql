@@ -52,7 +52,7 @@ const bcryptjs = require('bcryptjs');
        res.json( {message: message} );
      }
    });
-  } else {
+ } else {
     const err = new Error('Credentials are insufficient.');
     err.status = 401;
     next(err);
