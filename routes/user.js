@@ -21,48 +21,54 @@ router.get('/', authenticate, (req, res, next) => {
 
 /* POST create user. */
 router.post('/', (req, res, next) => {
-  //If user already exists, find the user
-  User.findOne({ where: { emailAddress: req.body.emailAddress } })
-    .then(user => {
-      // If user already exists based on emaill address
-      if (user) {
-        //Create the error
-        const err = new Error('This user already exists.')
-        //Bad request
+  if (!emailAddress) {
+    const err = new Error('Please enter sufficient credentials.');
+    err.status = 400;
+    next(err);
+  } else {
+    //If user already exists, find the user
+    User.findOne({ where: { emailAddress: req.body.emailAddress } })
+      .then(user => {
+        // If user already exists based on emaill address
+        if (user) {
+          //Create the error
+          const err = new Error('This user already exists.')
+          //Bad request
+          err.status = 400;
+          //Express catches and processes error
+          next(err);
+          //If user doesn'e exist
+        } else {
+          //Create place for new user
+          const newUser = {
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            emailAddress: req.body.emailAddress,
+            password: req.body.password
+          };
+            //Hash password -- https://www.npmjs.com/package/bcryptjs
+            newUser.password = bcryptjs.hashSync(newUser.password);
+          //Create new user
+          User.create(newUser)
+            .then (() => {
+              //Set location header
+              res.location('/');
+              //End, return no content
+              res.status(201).end();
+            })
+            //Catch errors
+            .catch(err => {
+              err.status = 400;
+              next(err);
+            });
+        }
+      })
+      //Catch errors
+      .catch(err => {
         err.status = 400;
-        //Express catches and processes error
         next(err);
-        //If user doesn'e exist
-      } else {
-        //Create place for new user
-        const newUser = {
-          firstName: req.body.firstName,
-          lastName: req.body.lastName,
-          emailAddress: req.body.emailAddress,
-          password: req.body.password
-        };
-          //Hash password -- https://www.npmjs.com/package/bcryptjs
-          newUser.password = bcryptjs.hashSync(newUser.password);
-        //Create new user
-        User.create(newUser)
-          .then (() => {
-            //Set location header
-            res.location('/');
-            //End, return no content
-            res.status(201).end();
-          })
-          //Catch errors
-          .catch(err => {
-            err.status = 400;
-            next(err);
-          });
-      }
-    })
-    //Catch errors
-    .catch(err => {
-      err.status = 400;
-      next(err);
-    });
+      });
+  }
 });
 
 
