@@ -21,6 +21,7 @@ router.get('/', authenticate, (req, res, next) => {
 
 /* POST create user. */
 router.post('/', (req, res, next) => {
+  //If credentials are not complete
   if (!req.body.emailAddress) {
     const err = new Error('Please enter sufficient credentials.');
     err.status = 400;
