@@ -53,9 +53,9 @@ const bcryptjs = require('bcryptjs');
      }
    });
   } else {
-     message = 'Auth header not found';
-     res.status(401);
-     next();
+    const err = new Error('Credentials are insufficient.');
+    err.status = 401;
+    next(err);
   }
 
 };
