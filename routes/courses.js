@@ -111,7 +111,7 @@ router.post('/', authenticate, (req, res, next) => {
                 //Set location header
                 res.location('/');
                 //End, return no content
-                res.status(201);//.end();
+                res.status(201).end();
               })
               //Catch the errors
               .catch(err => {
