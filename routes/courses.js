@@ -6,7 +6,7 @@ const Sequelize = require('sequelize');
 const authenticate = require('./authenticate');
 
 /* GET course list. */
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
   //Find all courses
   Course.findAll({
     //Object to pass to findAll to return data
@@ -111,7 +111,7 @@ router.post('/', authenticate, (req, res, next) => {
                 //Set location header
                 res.location('/');
                 //End, return no content
-                res.status(201).end();
+                res.status(201);//.end();
               })
               //Catch the errors
               .catch(err => {
@@ -129,7 +129,7 @@ router.post('/', authenticate, (req, res, next) => {
 });
 
 /* PUT update course. */
-router.put('/:id', authenticate, (req, res) => {
+router.put('/:id', authenticate, (req, res, next) => {
   //Find one course to update
   Course.findOne({ where: {id: req.params.id} })
     .then(course => {
