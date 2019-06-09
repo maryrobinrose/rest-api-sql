@@ -1,5 +1,7 @@
 'use strict';
 
+const User = require("./User");
+
 module.exports = function(sequelize, DataTypes) {
   const Course = sequelize.define('Course', {
     id: {
