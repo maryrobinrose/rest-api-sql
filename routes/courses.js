@@ -129,7 +129,7 @@ router.post('/', authenticate, (req, res, next) => {
 });
 
 /* PUT update course. */
-router.put('/:id', authenticate, (req, res, next) => {
+/*router.put('/:id', authenticate, (req, res, next) => {
   if(!req.body.title) {
     const err = new Error('Please enter a title.');
     err.status = 400;
@@ -142,7 +142,7 @@ router.put('/:id', authenticate, (req, res, next) => {
         if(!course) {
           //Show error
           res.status(404).json({message: 'Course Not Found'});
-        } else {
+        } else if (course){
           //Updated course info
           const updateCourse = {
             id: req.body.id,
@@ -154,7 +154,7 @@ router.put('/:id', authenticate, (req, res, next) => {
             userId: req.currentUser.id
           };
           //If course does exist, update it
-          course.update(updateCourse);
+          course.update(req.body);
         }
       })
       .then (() => {
@@ -166,7 +166,7 @@ router.put('/:id', authenticate, (req, res, next) => {
         err.status = 400;
         next(err);
     });
-});
+});*/
 
 /* Delete individual course. */
 router.delete('/:id', authenticate, (req,res) => {
