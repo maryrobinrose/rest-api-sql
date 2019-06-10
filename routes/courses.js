@@ -29,7 +29,7 @@ router.get('/', (req, res, next) => {
     .then(courses => {
       res.status(200);
       //Bring back courses from JSON
-      res.json({ courses });
+      res.json(courses);
     })
     //Catch the errors
     .catch(err => {
