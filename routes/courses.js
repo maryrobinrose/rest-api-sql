@@ -81,17 +81,17 @@ router.get('/:id', (req, res, next) => {
 
 /* POST create new course. */
 router.post('/', authenticate, (req, res, next) => {
+  //If title is not filled out
   if(!req.body.title) {
     const err = new Error('Please enter a title.');
     err.status = 400;
     next(err);
   } else {
-
-      //First check to see if course already exists
+      //Check to see if course already exists
       Course.findOne({ where: {title: req.body.title} })
-        .then(course => {
+        .then(title => {
           //If course already exists, show error
-          if(course) {
+          if(title) {
             const err = new Error('This course already exists.');
             err.status = 400;
             next(err);
@@ -107,9 +107,9 @@ router.post('/', authenticate, (req, res, next) => {
             };*/
             //If the course is new, create new course
             Course.create(req.body)
-              .then (() => {
+              .then (course => {
                 //Set location header
-                res.location('/');
+                res.location('/api/courses');
                 //End, return no content
                 res.status(201).end();
               })
@@ -120,11 +120,11 @@ router.post('/', authenticate, (req, res, next) => {
               });
           }
         })
-        //Catch the erros
-        .catch(err => {
+        //Catch the errors
+        /*.catch(err => {
           err.status = 400;
           next(err);
-        });
+        });*/
   }
 });
 

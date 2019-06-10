@@ -7,7 +7,7 @@ const authenticate = require('./authenticate');
 const bcryptjs = require('bcryptjs');
 
 /* GET current user (Read users that already exist) */
-router.get('/', authenticate, (req, res, next) => {
+router.get('/', authenticate, (req, res) => {
   //OK - working
   res.status(200);
   //Bring back formatted JSON data
