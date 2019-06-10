@@ -65,7 +65,7 @@ router.get('/:id', (req, res, next) => {
         if(course) {
           res.status(200);
           //Return the course
-          res.json({ course });
+          res.json(course);
         } else {
           //Show error if no course matches
           const err = new Error('This course does not exist.');
@@ -131,7 +131,7 @@ router.post('/', authenticate, (req, res, next) => {
 /* PUT update course. */
 router.put('/:id', authenticate, (req, res, next) => {
   //Find one course to update
-  Course.findOne({ where: {id: req.params.id} })
+  Course.findOne({ where: {id: req.body.id} })
     .then(course => {
       //If the course doesn't exist
       if(!course) {
