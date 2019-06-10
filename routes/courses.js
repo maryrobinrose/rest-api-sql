@@ -130,37 +130,42 @@ router.post('/', authenticate, (req, res, next) => {
 
 /* PUT update course. */
 router.put('/:id', authenticate, (req, res, next) => {
-  //Find one course to update
-  Course.findOne({ where: {id: req.body.id} })
-    .then(course => {
-      //If the course doesn't exist
-      if(!course) {
-        //Show error
-        res.status(404).json({message: 'Course Not Found'});
-      } else {
-        //Updated course info
-        const updateCourse = {
-          id: req.body.id,
-          title: req.body.title,
-          description: req.body.description,
-          estimatedTime: req.body.estimatedTime,
-          materialsNeeded: req.body.materialsNeeded,
-          //Current user's id to connect to new course
-          userId: req.currentUser.id
-        };
-        //If course does exist, update it
-        course.update(updateCourse);
-      }
-    })
-    .then (() => {
-      //Return no content and end the request
-      res.status(204).end();
-    })
-    //Catch the errors
-    .catch(err => {
-      err.status = 400;
-      next(err);
-  });
+  if(!req.body.title) {
+    const err = new Error('Please enter a title.');
+    err.status = 400;
+    next(err);
+  } else {
+    //Find one course to update
+    Course.findOne({ where: {id: req.body.id} })
+      .then(course => {
+        //If the course doesn't exist
+        if(!course) {
+          //Show error
+          res.status(404).json({message: 'Course Not Found'});
+        } else {
+          //Updated course info
+          const updateCourse = {
+            id: req.body.id,
+            title: req.body.title,
+            description: req.body.description,
+            estimatedTime: req.body.estimatedTime,
+            materialsNeeded: req.body.materialsNeeded,
+            //Current user's id to connect to new course
+            userId: req.currentUser.id
+          };
+          //If course does exist, update it
+          course.update(updateCourse);
+        }
+      })
+      .then (() => {
+        //Return no content and end the request
+        res.status(204).end();
+      })
+      //Catch the errors
+      .catch(err => {
+        err.status = 400;
+        next(err);
+    });
 });
 
 /* Delete individual course. */
