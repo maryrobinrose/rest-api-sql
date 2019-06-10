@@ -29,7 +29,7 @@ router.get('/', (req, res, next) => {
     .then(courses => {
       res.status(200);
       //Bring back courses from JSON
-      res.json(courses);
+      res.json({ courses });
     })
     //Catch the errors
     .catch(err => {
@@ -65,7 +65,7 @@ router.get('/:id', (req, res, next) => {
         if(course) {
           res.status(200);
           //Return the course
-          res.json(course);
+          res.json({ course });
         } else {
           //Show error if no course matches
           const err = new Error('This course does not exist.');
