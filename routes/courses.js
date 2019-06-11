@@ -128,11 +128,11 @@ router.put('/:id', authenticate, (req, res, next) => {
         err.status = 400;
         next(err);
       }
-      //Catch the errors
-      .catch(err => {
-        err.status = 400;
-        next(err);
-      });
+    })
+    //Catch the errors
+    .catch(err => {
+      err.status = 400;
+      next(err);
     });
 });
 
