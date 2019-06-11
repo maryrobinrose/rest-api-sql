@@ -110,41 +110,30 @@ router.post('/', authenticate, (req, res, next) => {
 
 /* PUT update course. */
 router.put('/:id', authenticate, (req, res, next) => {
-  if(!req.body.title) {
-    const err = new Error('Please enter a title.');
-    err.status = 400;
-    next(err);
-  } else {
-    //Find one course to update
-    Course.findOne({ where: {id: req.body.id} })
-      .then(course => {
-        //If the course doesn't exist
-        if(!course) {
-          //Show error
-          res.status(404).json({message: 'Course Not Found'});
-        } else if (course){
-          //Updated course info
-          const updateCourse = {
-            id: req.body.id,
-            title: req.body.title,
-            description: req.body.description,
-            estimatedTime: req.body.estimatedTime,
-            materialsNeeded: req.body.materialsNeeded,
-            //Current user's id to connect to new course
-            userId: req.currentUser.id
-          };
-          //If course does exist, update it
-          course.update(req.body);
-        }
-      })
-      .then (() => {
-        //Return no content and end the request
-        res.status(204).end();
-      })
-      //Catch the errors
-      .catch(err => {
+  //Find one course to update
+  Course.findOne({ where: {id: req.body.id} })
+    .then(course => {
+      //If the course doesn't exist
+      if(!course) {
+        //Show error
+        const err = new Error('Course not found.');
         err.status = 400;
         next(err);
+      } else {
+        //If course does exist, update it
+        Course.update(req.body);
+          .then (course => {
+            //Set location header
+            res.location('/api/courses');
+            //End, return no content
+            res.status(201).end();
+          })
+          //Catch the errors
+          .catch(err => {
+            err.status = 400;
+            next(err);
+          });
+      }
     });
 });
 
