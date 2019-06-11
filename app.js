@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const Sequelize = require('sequelize');
 const models = require('./models').sequelize;
 
+
 // construct the database
 const db = new Sequelize({
   dialect: "sqlite",

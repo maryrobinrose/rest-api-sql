@@ -73,10 +73,6 @@ router.get('/:id', (req, res, next) => {
           next(err);
         }
       });
-      /*.catch(err => {
-        err.status = 400;
-        next(err);
-      });*/
   });
 
 /* POST create new course. */
