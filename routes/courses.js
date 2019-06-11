@@ -92,19 +92,18 @@ router.post('/', authenticate, (req, res, next) => {
       } else {
         //If the course is new, create new course
         Course.create(req.body)
-          .then (course => {
-            //Set location header
-            res.location('/api/courses');
-            //End, return no content
-            res.status(201).end();
-          })
-          //Catch the errors
-          .catch(err => {
-            err.status = 400;
-            next(err);
-          });
+        .then (() => {
+          //Set location header
+          res.location('/api/courses');
+          //End, return no content
+          res.status(201).end();
+        })
+        //Catch the errors
+        .catch(err => {
+          err.status = 400;
+          next(err);
+        });
       }
-    })
   });
 });
 
@@ -121,19 +120,19 @@ router.put('/:id', authenticate, (req, res, next) => {
         next(err);
       } else {
         //If course does exist, update it
-        Course.update(req.body)
-          .then (course => {
-            //Set location header
-            res.location('/api/courses');
-            //End, return no content
-            res.status(201).end();
-          })
-          //Catch the errors
-          .catch(err => {
-            err.status = 400;
-            next(err);
-          });
+        Course.update(req.body);
       }
+      .then (course => {
+        //Set location header
+        res.location('/api/courses');
+        //End, return no content
+        res.status(201).end();
+      })
+      //Catch the errors
+      .catch(err => {
+        err.status = 400;
+        next(err);
+      });
     });
 });
 
