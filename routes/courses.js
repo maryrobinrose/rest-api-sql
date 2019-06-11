@@ -113,13 +113,7 @@ router.put('/:id', authenticate, (req, res, next) => {
   Course.findOne({ where: {id: req.body.id} })
     .then(course => {
       //If the course doesn't exist
-      if(!course) {
-        //Show error
-        const err = new Error('Course not found.');
-        err.status = 400;
-        next(err);
-        //If there is a course
-      } else {
+      if(course) {
         //If course does exist, update it
         Course.update(req.body);
         .then (() => {
@@ -128,12 +122,17 @@ router.put('/:id', authenticate, (req, res, next) => {
           //End, return no content
           res.status(201).end();
         })
-        //Catch the errors
-        .catch(err => {
-          err.status = 400;
-          next(err);
-        })
+      } else {
+        //Show error
+        const err = new Error('Course not found.');
+        err.status = 400;
+        next(err);
       }
+      //Catch the errors
+      .catch(err => {
+        err.status = 400;
+        next(err);
+      });
     });
 });
 
