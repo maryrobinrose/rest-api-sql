@@ -119,7 +119,7 @@ router.put('/:id', authenticate, (req, res, next) => {
         err.status = 400;
         next(err);
         //If there is a course
-      } else if (course) {
+      } else {
         //If course does exist, update it
         Course.update(req.body);
         .then (() => {
@@ -128,17 +128,13 @@ router.put('/:id', authenticate, (req, res, next) => {
           //End, return no content
           res.status(201).end();
         })
-      } else {
-        const err = new Error('Course not found.');
-        err.status = 400;
-        next(err);
+        //Catch the errors
+        .catch(err => {
+          err.status = 400;
+          next(err);
+        })
       }
-    )}
-      //Catch the errors
-      .catch(err => {
-        err.status = 400;
-        next(err);
-      })
+    });
 });
 
 /* Delete individual course. */
