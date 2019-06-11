@@ -118,11 +118,17 @@ router.put('/:id', authenticate, (req, res, next) => {
         const err = new Error('Course not found.');
         err.status = 400;
         next(err);
-      } else {
+        //If there is a course
+      } else if (course) {
         //If course does exist, update it
         Course.update(req.body);
+      } else {
+        const err = new Error('Course not found.');
+        err.status = 400;
+        next(err);
       }
-      .then (course => {
+    )}
+      .then (() => {
         //Set location header
         res.location('/api/courses');
         //End, return no content
@@ -132,8 +138,7 @@ router.put('/:id', authenticate, (req, res, next) => {
       .catch(err => {
         err.status = 400;
         next(err);
-      });
-    });
+      })
 });
 
 /* Delete individual course. */
