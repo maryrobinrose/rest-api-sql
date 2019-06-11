@@ -81,55 +81,35 @@ router.get('/:id', (req, res, next) => {
 
 /* POST create new course. */
 router.post('/', authenticate, (req, res, next) => {
-  //If title is not filled out
-  if(!req.body.title) {
-    const err = new Error('Please enter a title.');
-    err.status = 400;
-    next(err);
-  } else {
-      //Check to see if course already exists
-      Course.findOne({ where: {title: req.body.title} })
-        .then(title => {
-          //If course already exists, show error
-          if(title) {
-            const err = new Error('This course already exists.');
+  //Check to see if course already exists
+  Course.findOne({ where: {title: req.body.title} })
+    .then(course => {
+      //If course already exists, show error
+      if(course) {
+        const err = new Error('This course already exists.');
+        err.status = 400;
+        next(err);
+      } else {
+        //If the course is new, create new course
+        Course.create(req.body)
+          .then (course => {
+            //Set location header
+            res.location('/api/courses');
+            //End, return no content
+            res.status(201).end();
+          })
+          //Catch the errors
+          .catch(err => {
             err.status = 400;
             next(err);
-          } else {
-            //Variable holds new course info
-            /*const newCourse = {
-              id: req.body.id,
-              title: req.body.title,
-              description: req.body.description,
-              estimatedTime: req.body.estimatedTime,
-              materialsNeeded: req.body.materialsNeeded,
-              Userid: req.currentUser.id
-            };*/
-            //If the course is new, create new course
-            Course.create(req.body)
-              .then (course => {
-                //Set location header
-                res.location('/api/courses');
-                //End, return no content
-                res.status(201).end();
-              })
-              //Catch the errors
-              .catch(err => {
-                err.status = 400;
-                next(err);
-              });
-          }
-        })
-        //Catch the errors
-        /*.catch(err => {
-          err.status = 400;
-          next(err);
-        });*/
-  }
+          });
+      }
+    })
+  });
 });
 
 /* PUT update course. */
-/*router.put('/:id', authenticate, (req, res, next) => {
+router.put('/:id', authenticate, (req, res, next) => {
   if(!req.body.title) {
     const err = new Error('Please enter a title.');
     err.status = 400;
@@ -166,7 +146,7 @@ router.post('/', authenticate, (req, res, next) => {
         err.status = 400;
         next(err);
     });
-});*/
+});
 
 /* Delete individual course. */
 router.delete('/:id', authenticate, (req,res) => {

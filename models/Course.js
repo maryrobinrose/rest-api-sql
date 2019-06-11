@@ -15,6 +15,9 @@ module.exports = function(sequelize, DataTypes) {
       validate: {
         notEmpty: {
           msg: "Title is required"
+        },
+        notNull: {
+          msg: "Must contain a Title property"
         }
       }
     },
@@ -24,6 +27,9 @@ module.exports = function(sequelize, DataTypes) {
       validate: {
         notEmpty: {
           msg: "Description is required"
+        },
+        notNull: {
+          msg: "Must contain a description property"
         }
       }
     },
