@@ -105,14 +105,12 @@ router.post('/', authenticate, (req, res, next) => {
 
 /* PUT update course. */
 router.put('/:id', authenticate, (req, res, next) => {
-
-
   //Find one course to update
   Course.findOne({ where: {id: req.body.id} })
     .then(course => {
-      //If the course doesn't exist
+      //If the course exists
       if(course) {
-        //If course does exist, update it
+        //Then update it
         Course.update(req.body)
         .then (() => {
           //Set location header
