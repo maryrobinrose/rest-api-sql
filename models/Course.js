@@ -12,6 +12,7 @@ module.exports = function(sequelize, DataTypes) {
     title: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
       validate: {
         notEmpty: {
           msg: "Title is required"
@@ -24,6 +25,7 @@ module.exports = function(sequelize, DataTypes) {
     description: {
       type: DataTypes.TEXT,
       allowNull: false,
+      unique: true,
       validate: {
         notEmpty: {
           msg: "Description is required"

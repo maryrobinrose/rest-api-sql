@@ -105,6 +105,8 @@ router.post('/', authenticate, (req, res, next) => {
 
 /* PUT update course. */
 router.put('/:id', authenticate, (req, res, next) => {
+
+
   //Find one course to update
   Course.findOne({ where: {id: req.body.id} })
     .then(course => {
