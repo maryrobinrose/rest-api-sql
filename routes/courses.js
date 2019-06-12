@@ -104,15 +104,6 @@ router.post('/', authenticate, (req, res, next) => {
           err.status = 400;
           next(err);
         } else {
-          //Variable holds new course info
-          /*const newCourse = {
-            id: req.body.id,
-            title: req.body.title,
-            description: req.body.description,
-            estimatedTime: req.body.estimatedTime,
-            materialsNeeded: req.body.materialsNeeded,
-            Userid: req.currentUser.id
-          };*/
           //If the course is new, create new course
           Course.create(req.body)
             .then (course => {
@@ -128,11 +119,6 @@ router.post('/', authenticate, (req, res, next) => {
             });
           }
         })
-        //Catch the errors
-        /*.catch(err => {
-          err.status = 400;
-          next(err);
-        });*/
   }
 });
 
