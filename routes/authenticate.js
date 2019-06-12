@@ -12,15 +12,15 @@ const bcryptjs = require('bcryptjs');
  * @param {Function} next - The function to call to pass execution to the next middleware.
  */
 
- module.exports = (req, res, next) => {
-   //Hold errors
-   let message = null;
+module.exports = (req, res, next) => {
+  //Hold errors
+  let message = null;
 
-   //Get the user's credentials from the Authorization header.
-   const credentials = authenticate(req);
+  //Get the user's credentials from the Authorization header.
+  const credentials = authenticate(req);
 
-   //If user's credentials are valid
-   if (credentials) {
+  //If user's credentials are valid
+  if (credentials) {
     //Look for a user whose email address matches
     User.findOne({ where: { emailAddress: credentials.name } })
        .then (user => {
@@ -42,7 +42,7 @@ const bcryptjs = require('bcryptjs');
          res.status(401);
          //Show the message
          res.json( {message: message} );
-          }
+         }
       } else {
        //If user isn't a match
        message = `User not found for username: ${credentials.name}`;
@@ -52,7 +52,13 @@ const bcryptjs = require('bcryptjs');
        res.json( {message: message} );
      }
    });
- } else {
+ /*} else if (!req.credentials) {
+   const err = new Error('This is a test.');
+   err.status = 401;
+   next(err);*/
+
+   //If not enough credentials are entered
+  } else {
     const err = new Error('Credentials are insufficient.');
     err.status = 401;
     next(err);
