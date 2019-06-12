@@ -73,69 +73,117 @@ router.get('/:id', (req, res, next) => {
           next(err);
         }
       });
+      /*.catch(err => {
+        err.status = 400;
+        next(err);
+      });*/
   });
 
 /* POST create new course. */
 router.post('/', authenticate, (req, res, next) => {
-  //Check to see if course already exists
-  Course.findOne({ where: {title: req.body.title} })
-    .then(course => {
-      //If course already exists, show error
-      if(course) {
-        const err = new Error('This course already exists.');
-        err.status = 400;
-        next(err);
-      } else {
-        //If the course is new, create new course
-        Course.create(req.body)
-        .then (() => {
-          //Set location header
-          res.location('/api/courses');
-          //End, return no content
-          res.status(201).end();
-        })
-        //Catch the errors
-        .catch(err => {
+  //If title is not filled out
+  if(!req.body.title && !req.body.description) {
+    const err = new Error('Please enter a title and a description.');
+    err.status = 400;
+    next(err);
+  } else if (!req.body.title) {
+    const err = new Error('Please enter a title.');
+    err.status = 400;
+    next(err);
+  } else if (!req.body.description) {
+    const err = new Error('Please enter a description.');
+    err.status = 400;
+    next(err);
+  } else {
+    //Check to see if course already exists
+    Course.findOne({ where: {title: req.body.title} })
+      .then(title => {
+        //If course already exists, show error
+        if(title) {
+          const err = new Error('This course already exists.');
           err.status = 400;
           next(err);
-        });
-      }
-  });
+        } else {
+          //Variable holds new course info
+          /*const newCourse = {
+            id: req.body.id,
+            title: req.body.title,
+            description: req.body.description,
+            estimatedTime: req.body.estimatedTime,
+            materialsNeeded: req.body.materialsNeeded,
+            Userid: req.currentUser.id
+          };*/
+          //If the course is new, create new course
+          Course.create(req.body)
+            .then (course => {
+              //Set location header
+              res.location('/api/courses');
+              //End, return no content
+              res.status(201).end();
+            })
+            //Catch the errors
+            .catch(err => {
+              err.status = 400;
+              next(err);
+            });
+          }
+        })
+        //Catch the errors
+        /*.catch(err => {
+          err.status = 400;
+          next(err);
+        });*/
+  }
 });
 
 /* PUT update course. */
 router.put('/:id', authenticate, (req, res, next) => {
-  //Find one course to update
-  Course.findOne({ where: {id: req.body.id} })
-    .then(course => {
-      //If the course exists
-      if(course) {
-        //Then update it
-        Course.update(req.body)
-        .then (() => {
-          //Set location header
-          res.location('/api/courses');
-          //End, return no content
-          res.status(201).end();
-        })
-        //Catch the errors
-        .catch(err => {
-          err.status = 400;
-          next(err);
-        });
-      } else {
-        //Show error
-        const err = new Error('Course not found.');
+  //If title is not filled out
+  if(!req.body.title && !req.body.description) {
+    const err = new Error('Please enter a title and a description.');
+    err.status = 400;
+    next(err);
+  } else if (!req.body.title) {
+    const err = new Error('Please enter a title.');
+    err.status = 400;
+    next(err);
+  } else if (!req.body.description) {
+    const err = new Error('Please enter a description.');
+    err.status = 400;
+    next(err);
+  } else {
+    //Find one course to update
+    Course.findOne({ where: {id: req.body.id} })
+      .then(course => {
+        //If the course doesn't exist
+        if(!course) {
+          //Show error
+          res.status(404).json({message: 'Course Not Found'});
+        } else if (course) {
+          //Updated course info
+          const updateCourse = {
+            id: req.body.id,
+            title: req.body.title,
+            description: req.body.description,
+            estimatedTime: req.body.estimatedTime,
+            materialsNeeded: req.body.materialsNeeded,
+            //Current user's id to connect to new course
+            userId: req.currentUser.id
+          };
+          //If course does exist, update it
+          course.update(req.body);
+        }
+      })
+      .then (() => {
+        //Return no content and end the request
+        res.status(204).end();
+      })
+      //Catch the errors
+      .catch(err => {
         err.status = 400;
         next(err);
-      }
-    })
-    //Catch the errors
-    .catch(err => {
-      err.status = 400;
-      next(err);
     });
-
+  }
 });
 
 /* Delete individual course. */
