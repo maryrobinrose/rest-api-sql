@@ -111,7 +111,7 @@ router.put('/:id', authenticate, (req, res, next) => {
       //If the course doesn't exist
       if(course) {
         //If course does exist, update it
-        Course.update(req.body);
+        Course.update(req.body)
         .then (() => {
           //Set location header
           res.location('/api/courses');
