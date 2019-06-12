@@ -104,7 +104,7 @@ router.post('/', authenticate, (req, res, next) => {
 });
 
 /* PUT update course. */
-router.put('/:id', authenticate, (req, res, next) => {
+/*router.put('/:id', authenticate, (req, res, next) => {
   //Find one course to update
   Course.findOne({ where: {id: req.body.id} })
     .then(course => {
@@ -130,7 +130,7 @@ router.put('/:id', authenticate, (req, res, next) => {
       err.status = 400;
       next(err);
     });
-});
+});*/
 
 /* Delete individual course. */
 router.delete('/:id', authenticate, (req,res) => {

@@ -1,5 +1,3 @@
-'use strict';
-
 const express = require('express');
 const User = require("../models").User;
 const authenticate = require('basic-auth');
@@ -16,7 +14,7 @@ const bcryptjs = require('bcryptjs');
    //Hold errors
    let message = null;
 
-   //Get the user's credentials from the Authorization header.
+   //Get the user's credentials
    const credentials = authenticate(req);
 
    //If user's credentials are valid
