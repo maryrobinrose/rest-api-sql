@@ -104,7 +104,7 @@ router.post('/', authenticate, (req, res, next) => {
 });
 
 /* PUT update course. */
-/*router.put('/:id', authenticate, (req, res, next) => {
+router.put('/:id', authenticate, (req, res, next) => {
   //Find one course to update
   Course.findOne({ where: {id: req.body.id} })
     .then(course => {
@@ -118,6 +118,11 @@ router.post('/', authenticate, (req, res, next) => {
           //End, return no content
           res.status(201).end();
         })
+        //Catch the errors
+        .catch(err => {
+          err.status = 400;
+          next(err);
+        });
       } else {
         //Show error
         const err = new Error('Course not found.');
@@ -130,7 +135,8 @@ router.post('/', authenticate, (req, res, next) => {
       err.status = 400;
       next(err);
     });
-});*/
+
+});
 
 /* Delete individual course. */
 router.delete('/:id', authenticate, (req,res) => {
